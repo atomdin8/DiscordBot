@@ -26,7 +26,7 @@ async def update_stats():
 @bot.event
 async def on_ready():
     print(f'We have logged in as {bot.user}')
-    channel = bot.get_channel(1130847046950191255)  # you should copy your channel ID and paste here.
+    channel = bot.get_channel(CHANNEL_ID)  # you should copy your channel ID and paste here.
     if channel:
         await channel.send(BOT_READY_MESSAGE)
 
@@ -191,4 +191,3 @@ async def roll(ctx, num: str = None):
 
 #our bot will run with this TOKEN-----------------------------------------------------------------------
 bot.run(DISCORD_TOKEN)
-#you should paste your TOKEN inside the brackets here.
