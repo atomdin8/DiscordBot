@@ -1,4 +1,6 @@
 DISCORD_TOKEN = "YOUR TOKEN HERE!"
+CHANNEL_ID = 1130847046950191255
+
 STATS = "stats.txt"
 
 BOT_READY_MESSAGE = "Hello! If you get stuck somewhere, just write $code."
