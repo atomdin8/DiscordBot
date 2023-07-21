@@ -4,6 +4,7 @@ import requests
 import time
 import asyncio
 from discord.ext import commands
+from config import *
 
 
 #defaults
@@ -17,7 +18,7 @@ messages = 0
 
 #our statistic recorder function. this may require stats.txt file in this directory.
 async def update_stats():
-    with open("stats.txt", "a") as f:
+    with open(STATS, "a") as f:
         f.write(f"Time: {int(time.time())}, Messages: {messages}\n")
 
 
@@ -27,7 +28,7 @@ async def on_ready():
     print(f'We have logged in as {bot.user}')
     channel = bot.get_channel(1130847046950191255)  # you should copy your channel ID and paste here.
     if channel:
-        await channel.send("Hello! If you get stuck somewhere, just write $code.")
+        await channel.send(BOT_READY_MESSAGE)
 
 
 #blocking unwanted names
@@ -35,12 +36,12 @@ async def on_ready():
 async def on_member_update(before, after):
     n = after.nick
     if n:
-        if n.lower().count("admin") > 0:
+        if n.lower().count(UNWANTED_NAME) > 0:
             last = before.nick
             if last:
                 await after.edit(nick=last)
             else:
-                await after.edit(nick="STOP")
+                await after.edit(nick=TO_NAME)
 
 
 #control the channel message activities
@@ -50,25 +51,18 @@ async def on_message(message):
     messages += 1
     msg = message.content
 
-
-    #variables
-    sad_words = ["sad", "offended", "angry"]
-    happy_responses = ["Don't worry, everything will be alright!", "I can tell a joke that will cheer you up!", "Smiling is always the best medicine!"]
-    bad_words = ["swear", "badword", "curse", "profanity"]
-
-
     if message.author == bot.user:
         return
 
     # Reply for sad words
-    for word in sad_words:
+    for word in SAD_WORDS:
         if word in msg:
-            response = random.choice(happy_responses)
+            response = random.choice(HAPPY_RESPONSES)
             await message.channel.send(response)
             break
 
     #reply for bad words            
-    for word in bad_words:
+    for word in BAD_WORDS:
         if message.content.count(word) > 0:
             print("A bad word was said")
             await message.channel.purge(limit=1)
@@ -111,7 +105,7 @@ async def clean(ctx, limit=10):
 #do you need inspiration?
 @bot.command()
 async def quote(ctx):
-    response = requests.get("https://raw.githubusercontent.com/umutgokbayrak/ozlusozler/master/sozler.txt")
+    response = requests.get(QUOTEADDRESS)
 
     if response.status_code == 200:
         lines = response.text.splitlines()
@@ -196,5 +190,5 @@ async def roll(ctx, num: str = None):
     await roll_dice(ctx, num)
 
 #our bot will run with this TOKEN-----------------------------------------------------------------------
-bot.run('YOUR TOKEN HERE!')
+bot.run(DISCORD_TOKEN)
 #you should paste your TOKEN inside the brackets here.
