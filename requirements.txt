@@ -21,4 +21,5 @@ pip install requests
 
 3) You should open your own server and create a discord bot from this link: 
 https://discord.com/developers/applications
-Then you have to paste the TOKEN owned by the bot into the field at the bottom line of my main.py project file. Otherwise my project will not work.
+Then you have to paste the TOKEN owned by the bot into the config file variable named TOKEN. Otherwise my project will not work.
+You can see the CHANNEL_ID of the server you created at the end of your browser's url.
